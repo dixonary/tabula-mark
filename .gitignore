@@ -2,3 +2,4 @@
 tabula-mark.cabal
 *~
 dist/
+.vscode

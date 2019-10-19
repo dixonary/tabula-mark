@@ -64,7 +64,7 @@ main = do
         Right TabulaOK{..} -> do
             let assignments = tabulaData
             forever $ mark assignments tabulaConfig assignmentId
-        _ -> do
+        _ ->
             putStrLn "!! Couldn't find assignment (Is the assignment ID correct?)"
             
 
