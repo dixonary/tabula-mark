@@ -5,6 +5,7 @@ import System.Directory
 import Control.Monad
 import Data.Functor ((<&>))
 import Data.Function ((&))
+import Data.Maybe
 
 import Warwick.Config
 import Warwick.Tabula hiding (moduleCode)
@@ -106,9 +107,11 @@ mark assignments tabulaConfig assignmentId = do
                             userSubmissionPath
 
             shelly $ do
+                editor <- toShellyPath . T.unpack . fromMaybe "vim" <$> get_env "EDITOR"
+
                 cp "template" $ toShellyPath userFeedbackPath
                 cmd "open" $ toShellyPath userSubmissionPath
-                runHandles "vim" 
+                runHandles editor
                     [T.pack userFeedbackPath] 
                     [InHandle $ Inherit, OutHandle $ Inherit] 
                     (const $ const $ const $ return ())
