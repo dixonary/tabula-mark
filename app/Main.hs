@@ -35,16 +35,9 @@ Loop
   <upload uid.txt, upload mark>
 -}
 
-type AssignmentMap = HashMap String (Maybe Submission)
+type SubmissionMap = HashMap String (Maybe Submission)
 
 moduleCode = "cs130"
-
-tmpDir :: AssignmentID -> String
-tmpDir ass = "/tmp/mark/" ++ idAsString ass
-
-mkTmpDir :: AssignmentID -> IO ()
-mkTmpDir ass = shelly $ mkdir_p $ toShellyPath $ tmpDir ass
-
 
 main :: IO ()
 main = do
@@ -70,7 +63,7 @@ main = do
 
 
 
-mark :: AssignmentMap -> APIConfig -> AssignmentID -> IO ()
+mark :: SubmissionMap -> APIConfig -> AssignmentID -> IO ()
 mark assignments tabulaConfig assignmentId = do
     mapM_ putStrLn ["","--------------------------------------------------",""]
     
@@ -167,6 +160,15 @@ getAssignmentId = do
             writeFile assFile ass
             return ass
 
+
+-- Create a temporary directory for doing the marking in.
+mkTmpDir :: AssignmentID -> IO ()
+mkTmpDir ass = shelly $ mkdir_p $ toShellyPath $ tmpDir ass
+
+tmpDir :: AssignmentID -> String
+tmpDir ass = "/tmp/mark/" ++ idAsString ass
+
+            
 
 -- helpers
 putStrFl :: String -> IO ()
