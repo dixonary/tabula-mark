@@ -91,7 +91,7 @@ mark assignments tabulaConfig assignmentId = do
         Just (Just Submission{..}) -> do
 
             let
-                userSubmissionPath = tmpDir assignmentId ++ "/uid"
+                userSubmissionPath = tmpDir assignmentId ++ "/" ++ uid
                 userFeedbackPath   = uid ++ ".txt"
 
             putStrLn $ "Downloading submission..."
