@@ -106,14 +106,19 @@ mark assignments tabulaConfig assignmentId = do
                             attachmentFilename 
                             userSubmissionPath
 
-            shelly $ do
-                editor <- toShellyPath . T.unpack . fromMaybe "vim" <$> get_env "EDITOR"
+            feedbackExists <- doesFileExist userFeedbackPath
 
-                cp "template" $ toShellyPath userFeedbackPath
+            shelly $ do
+                editor <- toShellyPath . T.unpack . fromMaybe "vim" 
+                      <$> get_env "EDITOR"
+
+                unless feedbackExists
+                    $ cp "template" $ toShellyPath userFeedbackPath
+
                 cmd "open" $ toShellyPath userSubmissionPath
                 runHandles editor
                     [T.pack userFeedbackPath] 
-                    [InHandle $ Inherit, OutHandle $ Inherit] 
+                    [InHandle Inherit, OutHandle Inherit] 
                     (const $ const $ const $ return ())
 
             putStrFl "Enter final mark: "
@@ -135,7 +140,7 @@ mark assignments tabulaConfig assignmentId = do
                     $ postMarks moduleCode assignmentId feedback
 
             case res of
-                Right _ -> putStrLn $ "... Uploaded successfully."
+                Right _ -> putStrLn "... Uploaded successfully."
                 Left e  -> putStrLn $ "!! Marks not uploaded:\n" ++ show e
 
 
