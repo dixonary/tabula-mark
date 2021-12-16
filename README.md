@@ -1,5 +1,7 @@
 # tabula-mark
 
+This software is provided **without warranty or support, or any guarantees that it will work.** 
+
 A simple Command-Line Interface for marking scripts with Tabula.
 
 This is only suitable for assignments which:
